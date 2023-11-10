@@ -1,5 +1,5 @@
 package org.example;
-
+import Exception.ValidationException;
 public class Usuario {
     private Long id;
     private String nome;
@@ -7,25 +7,31 @@ public class Usuario {
     private String senha;
 
     public Usuario(Long id, String nome, String email, String senha) {
+        if (nome == null) throw new ValidationException("Nome é obrigatório");
+        if (email == null) throw new ValidationException("Email é obrigatório");
+        if (senha == null) throw new ValidationException("Senha é obrigatória");
+
+
+
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
     }
 
-    public Long Id() {
+    public Long id() {
         return id;
     }
 
-    public String Nome() {
+    public String nome() {
         return nome;
     }
 
-    public String Email() {
+    public String email() {
         return email;
     }
 
-    public String Senha() {
+    public String senha() {
         return senha;
     }
 }
