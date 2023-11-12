@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import Exception.ValidationException;
-import builders.UsuarioBuilder;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Domínio: Usuário")
