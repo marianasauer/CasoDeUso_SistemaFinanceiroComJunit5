@@ -1,13 +1,17 @@
 package services;
 
 import domain.Usuario;
+import services.repositories.UsuarioRepository;
 
 public class UsuarioService {
+
+    private UsuarioRepository repository;
+
+    public UsuarioService(UsuarioRepository repository) {
+        this.repository = repository;
+    }
+
     public Usuario salvar(Usuario usuario){
-        //Conectar com o banco
-        //Preparar o SQL
-        //Executar a consulta
-        //Obter o usuário persistido
-        return usuario;
+        return repository.salvar(usuario);
     }
 }
