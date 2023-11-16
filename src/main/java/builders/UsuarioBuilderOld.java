@@ -1,6 +1,6 @@
 package builders;
 
-import org.example.Usuario;
+import domain.Usuario;
 
 public class UsuarioBuilderOld {
     private Long id;

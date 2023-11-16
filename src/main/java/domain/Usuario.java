@@ -1,5 +1,5 @@
-package org.example;
-import Exception.ValidationException;
+package domain;
+import exception.ValidationException;
 
 import java.util.Objects;
 

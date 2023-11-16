@@ -1,4 +1,4 @@
-package Exception;
+package exception;
 
 public class ValidationException extends RuntimeException{
     private static final long serialVersionUID = -2773483842848384924L;

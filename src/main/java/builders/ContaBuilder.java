@@ -1,7 +1,7 @@
 package builders;
 
-import org.example.Conta;
-import org.example.Usuario;
+import domain.Conta;
+import domain.Usuario;
 
 public class ContaBuilder {
     private Long id;

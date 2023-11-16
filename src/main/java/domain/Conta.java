@@ -1,5 +1,5 @@
-package org.example;
-import Exception.ValidationException;
+package domain;
+import exception.ValidationException;
 public class Conta {
     private Long id;
     private String nome;

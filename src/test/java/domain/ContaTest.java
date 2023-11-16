@@ -1,11 +1,10 @@
-package org.example;
+package domain;
 
-import builders.ContaBuilder;
 import builders.UsuarioBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import Exception.ValidationException;
+import exception.ValidationException;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 

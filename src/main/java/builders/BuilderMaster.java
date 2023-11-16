@@ -1,6 +1,5 @@
 package builders;
-import org.example.Conta;
-import org.example.Usuario;
+import domain.Conta;
 
 import static java.lang.String.format;
 
