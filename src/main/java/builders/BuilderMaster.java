@@ -1,4 +1,5 @@
 package builders;
+import org.example.Conta;
 import org.example.Usuario;
 
 import static java.lang.String.format;
@@ -136,7 +137,7 @@ public class BuilderMaster {
 
     public static void main(String[] args) {
         BuilderMaster master = new BuilderMaster();
-        master.gerarCodigoClasse(Usuario.class);
+        master.gerarCodigoClasse(Conta.class);
     }
 }
 
