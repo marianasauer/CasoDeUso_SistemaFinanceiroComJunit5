@@ -39,6 +39,11 @@ public class Usuario {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(nome, email, senha);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Usuario usuario)) return false;
@@ -46,7 +51,14 @@ public class Usuario {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(nome, email, senha);
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", senha='" + senha + '\'' +
+                '}';
     }
+
+
 }
