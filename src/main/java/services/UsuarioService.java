@@ -1,6 +1,7 @@
 package services;
 
 import domain.Usuario;
+import exception.ValidationException;
 import services.repositories.UsuarioRepository;
 
 public class UsuarioService {
@@ -12,6 +13,9 @@ public class UsuarioService {
     }
 
     public Usuario salvar(Usuario usuario){
+        repository.getUserByEmail(usuario.email()).ifPresent(user ->{
+            throw new ValidationException(String.format("Usuário %s já cadastrado!", usuario.email()));
+        });
         return repository.salvar(usuario);
     }
 }
