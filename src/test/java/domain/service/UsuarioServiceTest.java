@@ -5,15 +5,21 @@ import domain.Usuario;
 import infra.UsuarioDummyRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import services.UsuarioService;
+import services.repositories.UsuarioRepository;
+
+import java.util.Optional;
 
 public class UsuarioServiceTest {
     private UsuarioService service;
+
     @Test
-    public void deveSalvarUsuarioComSucesso(){
-        service = new UsuarioService(new UsuarioDummyRepository());
-        Usuario user = UsuarioBuilder.umUsuario().comId(null).comEmail("outro9@email.com").agora();
-        Usuario savedUser = service.salvar(user);
-        Assertions.assertNotNull(savedUser.id());
+    public void deveSalvarUsuarioPorEmail(){
+        UsuarioRepository repository = Mockito.mock(UsuarioRepository.class);
+        service = new UsuarioService(repository);
+
+        Optional<Usuario> user =  service.getUserByEmail("mail@mail.com");
+        Assertions.assertTrue(user.isEmpty());
     }
 }

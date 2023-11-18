@@ -4,6 +4,8 @@ import domain.Usuario;
 import exception.ValidationException;
 import services.repositories.UsuarioRepository;
 
+import java.util.Optional;
+
 public class UsuarioService {
 
     private UsuarioRepository repository;
@@ -17,5 +19,9 @@ public class UsuarioService {
             throw new ValidationException(String.format("Usuário %s já cadastrado!", usuario.email()));
         });
         return repository.salvar(usuario);
+    }
+
+    public Optional<Usuario> getUserByEmail(String email){
+        return repository.getUserByEmail(email);
     }
 }
