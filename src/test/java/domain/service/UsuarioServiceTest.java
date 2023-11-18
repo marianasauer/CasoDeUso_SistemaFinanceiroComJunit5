@@ -15,11 +15,25 @@ public class UsuarioServiceTest {
     private UsuarioService service;
 
     @Test
-    public void deveSalvarUsuarioPorEmail(){
+    public void deveRetornarEmptyQuandoUsuarioInexistente(){
         UsuarioRepository repository = Mockito.mock(UsuarioRepository.class);
         service = new UsuarioService(repository);
 
+        Mockito.when(repository.getUserByEmail("mail@mail.com")).thenReturn(Optional.empty());
+
         Optional<Usuario> user =  service.getUserByEmail("mail@mail.com");
         Assertions.assertTrue(user.isEmpty());
+    }
+
+    @Test
+    public void deveRetornarUsuarioPorEmail(){
+        UsuarioRepository repository = Mockito.mock(UsuarioRepository.class);
+        service = new UsuarioService(repository);
+
+        Mockito.when(repository.getUserByEmail("mail@mail.com"))
+                .thenReturn(Optional.of(UsuarioBuilder.umUsuario().agora()));
+
+        Optional<Usuario> user =  service.getUserByEmail("mail@mail.com");
+        Assertions.assertFalse(user.isEmpty());
     }
 }
