@@ -31,15 +31,25 @@ public class UsuarioServiceTest {
         service = new UsuarioService(repository);
 
         Mockito.when(repository.getUserByEmail("mail@mail.com"))
-                .thenReturn(Optional.of(UsuarioBuilder.umUsuario().agora()));
+                .thenReturn(Optional.of(UsuarioBuilder.umUsuario().agora()), Optional.of(UsuarioBuilder.umUsuario().agora()), null)
+        ;
 
         Optional<Usuario> user =  service.getUserByEmail("mail@mail.com");
+        System.out.println(user);
         Assertions.assertTrue(user.isPresent());
+        user =  service.getUserByEmail("mail1234@mail.com");
+        System.out.println(user);
+        user =  service.getUserByEmail("mail@mail.com");
+        System.out.println(user);
+        user =  service.getUserByEmail("mail@mail.com");
         System.out.println(user);
 
-    //    Mockito.verify(repository, Mockito.atLeastOnce()).getUserByEmail("mail@mail.com");
-    //    Mockito.verify(repository, Mockito.never()).getUserByEmail("outro@mail.com");
-    //    Mockito.verifyNoMoreInteractions(repository);
+
+
+        Mockito.verify(repository, Mockito.times(3)).getUserByEmail("mail@mail.com");
+        Mockito.verify(repository, Mockito.times(1)).getUserByEmail("mail1234@mail.com");
+        Mockito.verify(repository, Mockito.never()).getUserByEmail("outroEmail@mail.com");
+        Mockito.verifyNoMoreInteractions(repository);
 
     }
 }
