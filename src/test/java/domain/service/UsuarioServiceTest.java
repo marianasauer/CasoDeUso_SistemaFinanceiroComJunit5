@@ -5,6 +5,7 @@ import domain.Usuario;
 import infra.UsuarioDummyRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import services.UsuarioService;
 import services.repositories.UsuarioRepository;
@@ -52,4 +53,22 @@ public class UsuarioServiceTest {
         Mockito.verifyNoMoreInteractions(repository);
 
     }
+
+    @Test
+    public void deveSalvarUsuarioComSucesso(){
+        UsuarioRepository repository = Mockito.mock(UsuarioRepository.class);
+        service = new UsuarioService(repository);
+        Usuario userToSave = UsuarioBuilder.umUsuario().comId(null).agora();
+
+        Mockito.when(repository.getUserByEmail(userToSave.email()))
+                        .thenReturn(Optional.empty());
+        Mockito.when(repository.salvar(userToSave)).thenReturn(UsuarioBuilder.umUsuario().agora());
+
+        Usuario savedUser =   service.salvar(userToSave);
+        Assertions.assertNotNull(savedUser.id());
+
+        Mockito.verify(repository).getUserByEmail(userToSave.email());
+    //    Mockito.verify(repository).salvar(userToSave);
+    }
+
 }
