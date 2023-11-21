@@ -7,21 +7,23 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import services.UsuarioService;
 import services.repositories.UsuarioRepository;
 
 import java.util.Optional;
 
 public class UsuarioServiceTest {
-    private UsuarioService service;
-    private UsuarioRepository repository;
+    @Mock private UsuarioRepository repository;
+    @InjectMocks private UsuarioService service;
+
 
     @BeforeEach
     public void setup(){
-        repository = Mockito.mock(UsuarioRepository.class);
-        service = new UsuarioService(repository);
+        MockitoAnnotations.openMocks(this);
     }
 
 //    @AfterEach
