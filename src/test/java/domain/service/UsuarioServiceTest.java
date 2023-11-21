@@ -2,6 +2,7 @@ package domain.service;
 
 import builders.UsuarioBuilder;
 import domain.Usuario;
+import exception.ValidationException;
 import infra.UsuarioDummyRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -18,6 +19,8 @@ import services.repositories.UsuarioRepository;
 
 import java.util.Optional;
 
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 public class UsuarioServiceTest {
     @Mock private UsuarioRepository repository;
@@ -32,7 +35,7 @@ public class UsuarioServiceTest {
     @Test
     public void deveRetornarEmptyQuandoUsuarioInexistente(){
 
-        Mockito.when(repository.getUserByEmail("mail@mail.com")).thenReturn(Optional.empty());
+        when(repository.getUserByEmail("mail@mail.com")).thenReturn(Optional.empty());
 
         Optional<Usuario> user =  service.getUserByEmail("mail@mail.com");
         Assertions.assertTrue(user.isEmpty());
@@ -41,7 +44,7 @@ public class UsuarioServiceTest {
     @Test
     public void deveRetornarUsuarioPorEmail(){
 
-        Mockito.when(repository.getUserByEmail("mail@mail.com"))
+        when(repository.getUserByEmail("mail@mail.com"))
                 .thenReturn(Optional.of(UsuarioBuilder.umUsuario().agora()));
         ;
 
@@ -63,15 +66,30 @@ public class UsuarioServiceTest {
 
         Usuario userToSave = UsuarioBuilder.umUsuario().comId(null).agora();
 
-        Mockito.when(repository.getUserByEmail(userToSave.email()))
+        when(repository.getUserByEmail(userToSave.email()))
                         .thenReturn(Optional.empty());
-        Mockito.when(repository.salvar(userToSave)).thenReturn(UsuarioBuilder.umUsuario().agora());
+        when(repository.salvar(userToSave)).thenReturn(UsuarioBuilder.umUsuario().agora());
 
         Usuario savedUser =   service.salvar(userToSave);
         Assertions.assertNotNull(savedUser.id());
 
         Mockito.verify(repository).getUserByEmail(userToSave.email());
     //    Mockito.verify(repository).salvar(userToSave);
+    }
+
+    @Test
+    public void deveRejeitarUsuarioExistente(){
+        Usuario userToSave = UsuarioBuilder.umUsuario().comId(null).agora();
+        when(repository.getUserByEmail(userToSave.email()))
+                .thenReturn(Optional.of(UsuarioBuilder.umUsuario().agora()));
+
+        ValidationException ex = Assertions.assertThrows(ValidationException.class, () ->
+                service.salvar(userToSave));
+        Assertions.assertTrue(ex.getMessage().endsWith("já cadastrado!"));
+
+        Mockito.verify(repository, Mockito.never()).salvar(userToSave);
+
+
     }
 
 }
