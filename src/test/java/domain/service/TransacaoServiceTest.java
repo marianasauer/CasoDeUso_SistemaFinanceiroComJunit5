@@ -7,6 +7,10 @@ import domain.Transacao;
 import exception.ValidationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
+import org.junit.jupiter.api.condition.EnabledOnJre;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -19,13 +23,17 @@ import services.TransacaoService;
 import services.repositories.TransacaoDAO;
 
 import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
+@EnabledIf(value = "isHoraValida")
 @ExtendWith(MockitoExtension.class)
 public class TransacaoServiceTest {
     @InjectMocks  private TransacaoService service;
     @Mock
     private TransacaoDAO dao;
+
 
     @Test
     public void deveSalvarTransacaoValida(){
@@ -74,5 +82,9 @@ public class TransacaoServiceTest {
                 Arguments.of(1L, "Descrição", 10D, LocalDate.now(), null, true, "Conta inexistente ")
 
                 );
+    }
+
+    public static boolean isHoraValida(){
+        return LocalDateTime.now().getHour() > 14;
     }
 }

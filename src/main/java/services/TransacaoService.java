@@ -4,10 +4,15 @@ import domain.Transacao;
 import exception.ValidationException;
 import services.repositories.TransacaoDAO;
 
+import java.time.LocalDateTime;
+
 public class TransacaoService {
     private TransacaoDAO dao;
 
     public Transacao salvar(Transacao transacao){
+        if(LocalDateTime.now().getHour() > 14)
+            throw new RuntimeException("Tente novamente amanhã");
+
         if (transacao.getDescricao() == null) throw new ValidationException("Descrição inexistente");
         if (transacao.getValor() == null) throw new ValidationException("Valor inexistente");
         if (transacao.getData() == null) throw new ValidationException("Data inexistente");
