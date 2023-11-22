@@ -1,16 +1,25 @@
 package domain.service;
 
+import builders.ContaBuilder;
 import builders.TransacaoBuilder;
+import domain.Conta;
 import domain.Transacao;
+import exception.ValidationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import services.TransacaoService;
 import services.repositories.TransacaoDAO;
+
+import java.time.LocalDate;
+import java.util.stream.Stream;
 
 @ExtendWith(MockitoExtension.class)
 public class TransacaoServiceTest {
@@ -42,6 +51,27 @@ public class TransacaoServiceTest {
                                     }
                                 );
                     }
+
+                );
+    }
+
+    @ParameterizedTest(name = "{6}")
+    @MethodSource(value = "cenariosObrigatorios")
+    public void deveValidarCamposObrigatoriosAoSalvar(Long id, String descricao, Double valor, LocalDate data, Conta conta, Boolean status, String mensagem){
+        String exMessage = Assertions.assertThrows(ValidationException.class, () -> {
+            Transacao transacao = TransacaoBuilder.umaTransacao().comId(id).comDescricao(descricao).comValor(valor)
+                    .comData(data).comConta(conta).comStatus(status).agora();
+            service.salvar(transacao);
+        }).getMessage();
+        Assertions.assertEquals(mensagem, exMessage);
+    }
+
+    static Stream<Arguments> cenariosObrigatorios(){
+        return Stream.of(
+                Arguments.of(1L, null, 10D, LocalDate.now(), ContaBuilder.umaConta().agora(), true, "Descrição inexistente "),
+                Arguments.of(1L, "Descrição", null, LocalDate.now(), ContaBuilder.umaConta().agora(), true, "Valor inexistente "),
+                Arguments.of(1L, "Descrição", 10D, null, ContaBuilder.umaConta().agora(), true, "Data inexistente "),
+                Arguments.of(1L, "Descrição", 10D, LocalDate.now(), null, true, "Conta inexistente ")
 
                 );
     }
