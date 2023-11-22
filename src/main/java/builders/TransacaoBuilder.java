@@ -14,7 +14,7 @@ public class TransacaoBuilder {
     private Transacao elemento;
     private TransacaoBuilder(){}
 
-    public static TransacaoBuilder umTransacao() {
+    public static TransacaoBuilder umaTransacao() {
         TransacaoBuilder builder = new TransacaoBuilder();
         inicializarDadosPadroes(builder);
         return builder;
@@ -25,11 +25,11 @@ public class TransacaoBuilder {
         Transacao elemento = builder.elemento;
 
 
-        elemento.setId(0L);
-        elemento.setDescricao("");
-        elemento.setValor(0.0);
-        elemento.setConta(null);
-        elemento.setData(null);
+        elemento.setId(1L);
+        elemento.setDescricao("Transação Válida");
+        elemento.setValor(10.0);
+        elemento.setConta(ContaBuilder.umaConta().agora());
+        elemento.setData(LocalDate.now());
         elemento.setStatus(false);
     }
 

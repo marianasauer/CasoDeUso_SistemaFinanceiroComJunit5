@@ -1,6 +1,7 @@
 package domain;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Transacao {
     private Long id;
@@ -56,5 +57,17 @@ public class Transacao {
 
     public void setConta(Conta conta) {
         this.conta = conta;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Transacao transacao)) return false;
+        return Objects.equals(getDescricao(), transacao.getDescricao()) && Objects.equals(getValor(), transacao.getValor()) && Objects.equals(getConta(), transacao.getConta()) && Objects.equals(getData(), transacao.getData()) && Objects.equals(getStatus(), transacao.getStatus());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDescricao(), getValor(), getConta(), getData(), getStatus());
     }
 }
