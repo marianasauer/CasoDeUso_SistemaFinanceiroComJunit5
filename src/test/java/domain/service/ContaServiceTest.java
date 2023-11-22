@@ -6,9 +6,7 @@ import exception.ValidationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import services.ContaService;
 import services.external.ContaEvent;
@@ -23,6 +21,8 @@ public class ContaServiceTest {
     @Mock private ContaRepository repository;
     @Mock private ContaEvent event;
 
+    @Captor private ArgumentCaptor<Conta> contaCaptor;
+
     @Test
     public void deveSalvarPrimeiraContaComSucesso() throws Exception {
         Conta contaToSave = ContaBuilder.umaConta().comId(null).comNome("Conta Valida" + LocalDateTime.now()).agora();
@@ -34,7 +34,9 @@ public class ContaServiceTest {
         Conta savedConta = service.salvar(contaToSave);
         Assertions.assertNotNull(savedConta.id());
 
-        Mockito.verify(repository).salvar(Mockito.any());
+        Mockito.verify(repository).salvar(contaCaptor.capture());
+        Assertions.assertNull(contaCaptor.getValue().id());
+        Assertions.assertTrue(contaCaptor.getValue().nome().startsWith("Conta Valida"));
     }
 
     @Test

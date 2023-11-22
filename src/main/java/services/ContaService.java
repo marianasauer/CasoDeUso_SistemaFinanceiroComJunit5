@@ -23,7 +23,9 @@ public class ContaService {
             if (conta.nome().equalsIgnoreCase(contaExistente.nome()))
                 throw new ValidationException("Usuário já possui uma conta com este nome");
         });
-        Conta contaPersistida = repository.salvar(new Conta(conta.id(), conta.nome() + LocalDateTime.now(), conta.usuario()));
+        Conta novaConta = new Conta(conta.id(), conta.nome() +LocalDateTime.now(), conta.usuario());
+        System.out.println(novaConta);
+        Conta contaPersistida = repository.salvar(novaConta);
         try {
             event.dispatch(contaPersistida, ContaEvent.EventType.CREATED);
         } catch (Exception e) {
