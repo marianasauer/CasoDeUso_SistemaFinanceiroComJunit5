@@ -14,6 +14,7 @@ import services.ContaService;
 import services.external.ContaEvent;
 import services.repositories.ContaRepository;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,13 +25,16 @@ public class ContaServiceTest {
 
     @Test
     public void deveSalvarPrimeiraContaComSucesso() throws Exception {
-        Conta contaToSave = ContaBuilder.umaConta().comId(null).agora();
-        Mockito.when(repository.salvar(contaToSave))
+        Conta contaToSave = ContaBuilder.umaConta().comId(null).comNome("Conta Valida" + LocalDateTime.now()).agora();
+
+        Mockito.when(repository.salvar(Mockito.any(Conta.class)))
                 .thenReturn(ContaBuilder.umaConta().agora());
         Mockito.doNothing().when(event).dispatch(ContaBuilder.umaConta().agora(), ContaEvent.EventType.CREATED);
 
         Conta savedConta = service.salvar(contaToSave);
         Assertions.assertNotNull(savedConta.id());
+
+        Mockito.verify(repository).salvar(Mockito.any());
     }
 
     @Test
@@ -38,7 +42,7 @@ public class ContaServiceTest {
         Conta contaToSave = ContaBuilder.umaConta().comId(null).agora();
         Mockito.when(repository.obterContasPorUsuario(contaToSave.usuario().id()))
                 .thenReturn(Arrays.asList(ContaBuilder.umaConta().comNome("Outra conta").agora()));
-        Mockito.when(repository.salvar(contaToSave))
+        Mockito.when(repository.salvar(Mockito.any(Conta.class)))
                 .thenReturn(ContaBuilder.umaConta().agora());
 
         Conta savedConta = service.salvar(contaToSave);
@@ -63,7 +67,7 @@ public class ContaServiceTest {
         Conta contaToSave = ContaBuilder.umaConta().comId(null).agora();
         Conta contaSalva = ContaBuilder.umaConta().agora();
 
-        Mockito.when(repository.salvar(contaToSave))
+        Mockito.when(repository.salvar(Mockito.any(Conta.class)))
                 .thenReturn(contaSalva);
         Mockito.doThrow(new Exception("Falha catastrófica"))
                 .when(event).dispatch(contaSalva, ContaEvent.EventType.CREATED);

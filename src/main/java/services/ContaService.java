@@ -5,6 +5,7 @@ import exception.ValidationException;
 import services.external.ContaEvent;
 import services.repositories.ContaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ContaService {
@@ -22,7 +23,7 @@ public class ContaService {
             if (conta.nome().equalsIgnoreCase(contaExistente.nome()))
                 throw new ValidationException("Usuário já possui uma conta com este nome");
         });
-        Conta contaPersistida = repository.salvar(conta);
+        Conta contaPersistida = repository.salvar(new Conta(conta.id(), conta.nome() + LocalDateTime.now(), conta.usuario()));
         try {
             event.dispatch(contaPersistida, ContaEvent.EventType.CREATED);
         } catch (Exception e) {

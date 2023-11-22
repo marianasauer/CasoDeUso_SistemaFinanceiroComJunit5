@@ -41,4 +41,13 @@ public class Conta {
     public int hashCode() {
         return Objects.hash(id, nome, usuario);
     }
+
+    @Override
+    public String toString() {
+        return "Conta{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", usuario=" + usuario +
+                '}';
+    }
 }
