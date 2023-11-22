@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import services.ContaService;
+import services.external.ContaEvent;
 import services.repositories.ContaRepository;
 
 import java.util.Arrays;
@@ -19,12 +20,14 @@ import java.util.Arrays;
 public class ContaServiceTest {
     @InjectMocks private ContaService service;
     @Mock private ContaRepository repository;
+    @Mock private ContaEvent event;
 
     @Test
     public void deveSalvarPrimeiraContaComSucesso(){
         Conta contaToSave = ContaBuilder.umaConta().comId(null).agora();
         Mockito.when(repository.salvar(contaToSave))
                 .thenReturn(ContaBuilder.umaConta().agora());
+        Mockito.doNothing().when(event).dispatch(ContaBuilder.umaConta().agora(), ContaEvent.EventType.CREATED);
 
         Conta savedConta = service.salvar(contaToSave);
         Assertions.assertNotNull(savedConta.id());

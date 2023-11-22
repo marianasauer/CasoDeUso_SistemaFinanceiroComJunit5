@@ -2,15 +2,18 @@ package services;
 
 import domain.Conta;
 import exception.ValidationException;
+import services.external.ContaEvent;
 import services.repositories.ContaRepository;
 
 import java.util.List;
 
 public class ContaService {
     private ContaRepository repository;
+    private ContaEvent event;
 
-    public ContaService(ContaRepository repository) {
+    public ContaService(ContaRepository repository, ContaEvent event) {
         this.repository = repository;
+        this.event = event;
     }
 
     public Conta salvar(Conta conta){
@@ -19,6 +22,8 @@ public class ContaService {
             if (conta.nome().equalsIgnoreCase(contaExistente.nome()))
                 throw new ValidationException("Usuário já possui uma conta com este nome");
         });
-        return repository.salvar(conta);
+        Conta contaPersistida = repository.salvar(conta);
+        event.dispatch(contaPersistida, ContaEvent.EventType.CREATED);
+        return contaPersistida;
     }
 }

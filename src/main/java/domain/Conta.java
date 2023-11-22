@@ -1,5 +1,8 @@
 package domain;
 import exception.ValidationException;
+
+import java.util.Objects;
+
 public class Conta {
     private Long id;
     private String nome;
@@ -24,5 +27,18 @@ public class Conta {
 
     public Usuario usuario() {
         return usuario;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Conta conta)) return false;
+        return Objects.equals(id, conta.id) && Objects.equals(nome, conta.nome) && Objects.equals(usuario, conta.usuario);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, usuario);
     }
 }
