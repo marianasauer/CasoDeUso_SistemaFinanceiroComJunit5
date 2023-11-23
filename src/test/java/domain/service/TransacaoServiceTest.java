@@ -17,6 +17,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import services.TransacaoService;
@@ -24,10 +25,11 @@ import services.repositories.TransacaoDAO;
 
 import java.time.LocalDate;
 
+
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
-@EnabledIf(value = "isHoraValida")
+
 @ExtendWith(MockitoExtension.class)
 public class TransacaoServiceTest {
     @InjectMocks  private TransacaoService service;
@@ -38,29 +40,41 @@ public class TransacaoServiceTest {
     @Test
     public void deveSalvarTransacaoValida(){
         Transacao transacaoParaSalvar = TransacaoBuilder.umaTransacao().comId(null).agora();
-        Transacao transacaoPersistida = TransacaoBuilder.umaTransacao().agora();
         Mockito.when(dao.salvar(transacaoParaSalvar)).thenReturn(
                 TransacaoBuilder.umaTransacao().agora()
         );
 
-        Transacao transacaoSalva = service.salvar(transacaoParaSalvar);
-        Assertions.assertEquals(TransacaoBuilder.umaTransacao().agora(), transacaoSalva);
-        Assertions.assertAll("Transacao",
+        LocalDateTime dataDesejada = LocalDateTime.of(2023, 1,1, 4, 30, 28);
+        System.out.println(dataDesejada);
+        System.out.println(LocalDateTime.now());
+
+        try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class)){
+            ldt.when(() -> LocalDateTime.now()).thenReturn(dataDesejada);
+            System.out.println(LocalDateTime.now());
+
+            Transacao transacaoSalva = service.salvar(transacaoParaSalvar);
+            Assertions.assertEquals(TransacaoBuilder.umaTransacao().agora(), transacaoSalva);
+            Assertions.assertAll("Transacao",
                     () -> Assertions.assertEquals(1L, transacaoSalva.getId()),
                     () -> Assertions.assertEquals("Transação Válida", transacaoSalva.getDescricao()),
                     () -> {
                         Assertions.assertAll("Conta",
-                                    () -> Assertions.assertEquals("Conta Válida", transacaoSalva.getConta().nome()),
-                                    () -> {
-                                        Assertions.assertAll("Usuário",
-                                                () -> Assertions.assertEquals("Usuário Válido", transacaoSalva.getConta().usuario().nome()),
-                                                () -> Assertions.assertEquals("12345678", transacaoSalva.getConta().usuario().senha())
-                                        );
-                                    }
-                                );
+                                () -> Assertions.assertEquals("Conta Válida", transacaoSalva.getConta().nome()),
+                                () -> {
+                                    Assertions.assertAll("Usuário",
+                                            () -> Assertions.assertEquals("Usuário Válido", transacaoSalva.getConta().usuario().nome()),
+                                            () -> Assertions.assertEquals("12345678", transacaoSalva.getConta().usuario().senha())
+                                    );
+                                }
+                        );
                     }
 
-                );
+            );
+            ldt.verify(() -> LocalDateTime.now(), Mockito.times(2));
+        }
+        System.out.println(LocalDateTime.now());
+
+
     }
 
     @ParameterizedTest(name = "{6}")
@@ -84,7 +98,5 @@ public class TransacaoServiceTest {
                 );
     }
 
-    public static boolean isHoraValida(){
-        return LocalDateTime.now().getHour() > 14;
-    }
+
 }
