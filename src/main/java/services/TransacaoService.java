@@ -2,6 +2,7 @@ package services;
 
 import domain.Transacao;
 import exception.ValidationException;
+import services.external.ClockService;
 import services.repositories.TransacaoDAO;
 
 import java.time.LocalDateTime;
@@ -9,9 +10,10 @@ import java.util.Date;
 
 public class TransacaoService {
     private TransacaoDAO dao;
+    private ClockService clock;
 
     public Transacao salvar(Transacao transacao){
-        if(new Date().getHours() > 14)
+        if(clock.getCurrentTime().getHour() > 14)
             throw new RuntimeException("Tente novamente amanhã");
 
         if (transacao.getDescricao() == null) throw new ValidationException("Descrição inexistente");

@@ -6,6 +6,7 @@ import domain.Conta;
 import domain.Transacao;
 import exception.ValidationException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.api.condition.EnabledOnJre;
@@ -18,6 +19,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import services.TransacaoService;
+import services.external.ClockService;
 import services.repositories.TransacaoDAO;
 
 import java.time.LocalDate;
@@ -34,6 +36,14 @@ public class TransacaoServiceTest {
     @Mock
     private TransacaoDAO dao;
 
+    @Mock
+    private ClockService clock;
+
+    @BeforeEach
+    public void setup(){
+        Mockito.when(clock.getCurrentTime()).thenReturn(LocalDateTime.of(2023, 1,1,4,30,15));
+
+    }
 
     @Test
     public void deveSalvarTransacaoValida(){
@@ -41,13 +51,6 @@ public class TransacaoServiceTest {
         Mockito.when(dao.salvar(transacaoParaSalvar)).thenReturn(
                 TransacaoBuilder.umaTransacao().agora()
         );
-
-        System.out.println(new Date().getHours());
-
-        try (MockedConstruction<Date> date = Mockito.mockConstruction(Date.class,
-                (mock, context) -> { Mockito.when(mock.getHours()).thenReturn(4);}
-        )){
-            System.out.println(new Date().getHours());
 
             Transacao transacaoSalva = service.salvar(transacaoParaSalvar);
             Assertions.assertEquals(TransacaoBuilder.umaTransacao().agora(), transacaoSalva);
@@ -67,11 +70,9 @@ public class TransacaoServiceTest {
                     }
 
             );
-      //      ldt.verify(() -> LocalDateTime.now(), Mockito.times(2));
-            Assertions.assertEquals(2, date.constructed().size());
-        }
-        System.out.println(new Date().getHours());
 
+
+        System.out.println(new Date().getHours());
 
     }
 
