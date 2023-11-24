@@ -15,10 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import services.TransacaoService;
 import services.repositories.TransacaoDAO;
@@ -27,6 +24,7 @@ import java.time.LocalDate;
 
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.stream.Stream;
 
 
@@ -44,13 +42,12 @@ public class TransacaoServiceTest {
                 TransacaoBuilder.umaTransacao().agora()
         );
 
-        LocalDateTime dataDesejada = LocalDateTime.of(2023, 1,1, 4, 30, 28);
-        System.out.println(dataDesejada);
-        System.out.println(LocalDateTime.now());
+        System.out.println(new Date().getHours());
 
-        try (MockedStatic<LocalDateTime> ldt = Mockito.mockStatic(LocalDateTime.class)){
-            ldt.when(() -> LocalDateTime.now()).thenReturn(dataDesejada);
-            System.out.println(LocalDateTime.now());
+        try (MockedConstruction<Date> date = Mockito.mockConstruction(Date.class,
+                (mock, context) -> { Mockito.when(mock.getHours()).thenReturn(4);}
+        )){
+            System.out.println(new Date().getHours());
 
             Transacao transacaoSalva = service.salvar(transacaoParaSalvar);
             Assertions.assertEquals(TransacaoBuilder.umaTransacao().agora(), transacaoSalva);
@@ -70,9 +67,10 @@ public class TransacaoServiceTest {
                     }
 
             );
-            ldt.verify(() -> LocalDateTime.now(), Mockito.times(2));
+      //      ldt.verify(() -> LocalDateTime.now(), Mockito.times(2));
+            Assertions.assertEquals(2, date.constructed().size());
         }
-        System.out.println(LocalDateTime.now());
+        System.out.println(new Date().getHours());
 
 
     }

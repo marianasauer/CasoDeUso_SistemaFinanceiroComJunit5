@@ -5,12 +5,13 @@ import exception.ValidationException;
 import services.repositories.TransacaoDAO;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class TransacaoService {
     private TransacaoDAO dao;
 
     public Transacao salvar(Transacao transacao){
-        if(LocalDateTime.now().getHour() > 14)
+        if(new Date().getHours() > 14)
             throw new RuntimeException("Tente novamente amanhã");
 
         if (transacao.getDescricao() == null) throw new ValidationException("Descrição inexistente");
