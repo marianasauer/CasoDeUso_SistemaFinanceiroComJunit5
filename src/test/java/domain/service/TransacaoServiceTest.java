@@ -41,7 +41,7 @@ public class TransacaoServiceTest {
     @Mock
     private TransacaoDAO dao;
 
-
+    @Captor private ArgumentCaptor<Transacao> captor;
 
     @BeforeEach
     public void setup(){
@@ -88,7 +88,7 @@ public class TransacaoServiceTest {
                     .comData(data).comConta(conta).comStatus(status).agora();
             service.salvar(transacao);
         }).getMessage();
-        Assertions.assertEquals(mensagem, exMessage);
+        Assertions.assertEquals(mensagem.trim(), exMessage.trim());
     }
 
     static Stream<Arguments> cenariosObrigatorios(){
@@ -112,5 +112,25 @@ public class TransacaoServiceTest {
         Assertions.assertEquals("Valor inexistente", ex.getCause().getMessage());
     }
 
+@Test
+    public void deveRejeitarTransacaoTardeDaNoite(){
+        //Mockito.reset(service);
+    Mockito.when(service.getTime()).thenReturn(LocalDateTime.of(2023, 1,1,23,30,15));
+    String exMessage = Assertions.assertThrows(RuntimeException.class, () -> {
+
+            service.salvar(TransacaoBuilder.umaTransacao().agora());
+        }).getMessage();
+        Assertions.assertEquals("Tente novamente amanhã", exMessage);
+    }
+
+    @Test
+    public void deveSalvarTransacaoComoPendentePorPadrao(){
+        Transacao transacao = TransacaoBuilder.umaTransacao().comStatus(null).agora();
+        service.salvar(transacao);
+
+        Mockito.verify(dao).salvar(captor.capture());
+        Transacao transacaoValidada = captor.getValue();
+        Assertions.assertFalse(transacaoValidada.getStatus());
+    }
 
 }
