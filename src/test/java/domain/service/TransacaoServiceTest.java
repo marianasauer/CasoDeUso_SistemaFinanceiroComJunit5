@@ -32,16 +32,16 @@ import java.util.stream.Stream;
 
 @ExtendWith(MockitoExtension.class)
 public class TransacaoServiceTest {
-    @InjectMocks  private TransacaoService service;
+    @InjectMocks @Spy private TransacaoService service;
     @Mock
     private TransacaoDAO dao;
 
-    @Mock
-    private ClockService clock;
+
 
     @BeforeEach
     public void setup(){
-        Mockito.when(clock.getCurrentTime()).thenReturn(LocalDateTime.of(2023, 1,1,4,30,15));
+  //      Mockito.when(clock.getCurrentTime()).thenReturn(LocalDateTime.of(2023, 1,1,4,30,15));
+        Mockito.when(service.getTime()).thenReturn(LocalDateTime.of(2023, 1,1,4,30,15));
 
     }
 
@@ -72,7 +72,6 @@ public class TransacaoServiceTest {
             );
 
 
-        System.out.println(new Date().getHours());
 
     }
 
