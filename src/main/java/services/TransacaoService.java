@@ -14,14 +14,18 @@ public class TransacaoService {
         if(getTime().getHour() > 10)
             throw new RuntimeException("Tente novamente amanhã");
 
+        validarCamposObrigatorios(transacao);
+
+        return dao.salvar(transacao);
+
+    }
+
+    private static void validarCamposObrigatorios(Transacao transacao) {
         if (transacao.getDescricao() == null) throw new ValidationException("Descrição inexistente");
         if (transacao.getValor() == null) throw new ValidationException("Valor inexistente");
         if (transacao.getData() == null) throw new ValidationException("Data inexistente");
         if (transacao.getConta() == null) throw new ValidationException("Conta inexistente");
         if (transacao.getStatus() == null) transacao.setStatus(false);
-
-        return dao.salvar(transacao);
-
     }
 
     public LocalDateTime getTime(){

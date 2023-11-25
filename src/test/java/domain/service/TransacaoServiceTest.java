@@ -18,10 +18,14 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import services.TransacaoService;
 import services.external.ClockService;
 import services.repositories.TransacaoDAO;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 
 
@@ -31,6 +35,7 @@ import java.util.stream.Stream;
 
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class TransacaoServiceTest {
     @InjectMocks @Spy private TransacaoService service;
     @Mock
@@ -94,6 +99,17 @@ public class TransacaoServiceTest {
                 Arguments.of(1L, "Descrição", 10D, LocalDate.now(), null, true, "Conta inexistente ")
 
                 );
+    }
+
+    @Test
+    public void deveRejeitarTransacaoSemValor() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Transacao transacao = TransacaoBuilder.umaTransacao().comValor(null).agora();
+
+        Method metodo = TransacaoService.class.getDeclaredMethod("validarCamposObrigatorios", Transacao.class);
+        metodo.setAccessible(true);
+        Exception ex = Assertions.assertThrows(Exception.class, () ->
+            metodo.invoke(new TransacaoService(), transacao));
+        Assertions.assertEquals("Valor inexistente", ex.getCause().getMessage());
     }
 
 
