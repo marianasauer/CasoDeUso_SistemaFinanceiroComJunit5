@@ -78,7 +78,7 @@ Mockito.verify(repository, Mokito.times(3)).getUserByEmail("mail@mail.com");
 Mockito.verifyNoMoreInteractions(repository);
 ~~~~
 
-# Annotations
+## Annotations
 Pode ser utilizada para fazer a injeção de dependências do repository para o service.
 ~~~~java
 @Mock private UserRepository repository;
@@ -86,7 +86,29 @@ Pode ser utilizada para fazer a injeção de dependências do repository para o 
 ~~~~
 Essa abordagem simplifica a inicialização e o gerenciamento de dependências, permitindo que o repositório seja instanciado como um mock e injetado no serviço de forma eficiente. 
 
+## Exceções no Mock
+É utilizado para simular exceções. Por exemplo, sendo feito a tentativa de publicar o evento que a conta foi criada e se ocorrer alguma falha durante a publicação desse evento, sendo assim, a conta não deverá existir e será lançada uma exceção.
+- Já as exceções do tipo unchecked pode ser lançada sem precisar declarar.
 
+## Matchers 
+Sendo utilizado para quando não se tem controle total de como vai ser chamado ou retornado e até mesmo quandos os dados são randômicos. 
+- É possível tentar prever o resultado.
+- Ou pedir para o Mockito não se importar com o que será passado.
+~~~~java
+{
+  Mockito.any(Conta.class)
+}
+~~~~
+
+## Argument Captor
+É usado para ter certeza de que os valores passados estão corretos, sendo possível verificar se está no caminho correto.
+- Não tendo controle mas se importando com o valor.
+~~~~java
+@Captor private AgumentCaptor<Conta> contaCaptor;
+{
+  Mockito.verify(repository).salvar(ContaCaptor.capture());
+    System.out.println(contaCaptor.getValue());
+}
 
 
 
