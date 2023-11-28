@@ -1,5 +1,5 @@
 # Aplicação com Junit 5 em um Sistema Financeiro
-![image](https://github.com/marianasauer/apiTestes/assets/105138712/e56b987f-163b-4740-abe3-59d6cc832c1a) 
+
 ## Testes Unitários:
 É um alinhamento entre a expectativa e a realidade, já sabendo previamente o resultado correto.
 
@@ -17,6 +17,11 @@ Tem como objetivo reduzir o universo de testes em um subconjunto menor. Assim, e
 - Erro: Quando o resultado do teste não é o esperado.
 - Falha: Quando não é possível executar o teste, podendo causar um AssertionError.
 <img width="466" alt="image" src="https://github.com/marianasauer/apiTestes/assets/105138712/349b7809-66ef-4540-8a67-323048db778f">
+
+# Anotações do Junit
+| ------------- | ------------- |
+| @BeforeEach | É executado antes de cada um dos testes.  |
+| @BeforeAll | É executado uma vez a cada execução.  |
 
 
 
