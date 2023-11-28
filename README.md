@@ -45,13 +45,15 @@ O domínio é uma esfera de conhecimento. Refere-se ao conhecimento de negócios
 
 ## Parameterized
 Podemos escrever o código e passar uma lista de um conjunto de valores a serem utilizado. Para cada conjunto de valores será criado um novo teste, assim não terá uma lista de testes repetitivos extensa e vai facilitar caso seja necessário adicionar um novo teste, será necessário apenas adicionar uma nova linha no parameterized.
-<br>
+
+~~~~java
 @ParameterizedTest
 @CsvSource(value = {" ", " ", " "})
 public void deveDividirCorretamente(int num, int den, double res){
   float resultado = calc.dividir(num, den);
   Assertions.assertEquals(res, resultado);
 }
+~~~
 
 
 
