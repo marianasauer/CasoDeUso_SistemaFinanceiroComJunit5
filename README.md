@@ -1,4 +1,5 @@
-# Aplicação com Junit 5 em um Sistema Financeiro https://icons8.com.br/icon/70096/5-circulado
+# Aplicação com Junit 5 em um Sistema Financeiro ![image](https://github.com/marianasauer/apiTestes/assets/105138712/b5a7de4f-ab0b-4392-90b9-037ed063a429)
+
 
 ## Testes Unitários:
 É um alinhamento entre a expectativa e a realidade, já sabendo previamente o resultado correto.
