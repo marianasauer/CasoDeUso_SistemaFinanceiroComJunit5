@@ -22,7 +22,19 @@ Tem como objetivo reduzir o universo de testes em um subconjunto menor. Assim, e
 <table>
   <tr>
     <td>@BeforeEach</td>
+    <td>É executado antes de cada um dos testes. Podemos utiliza-lo para trazer o banco ao estado inicial.</td>
+  </tr>
+  <tr>
     <td>@BeforeAll</td>
+    <td>É executado uma vez a cada execução (sendo executado no momento que a classe vai ser criada). Podemos utiliza-lo para criar a estrutura do banco de dados.</td>
+  </tr>
+  <tr>
+    <td>@AfterEach</td>
+    <td>É executado depois de cada um dos testes. Podemos utiliza-lo para limpar os dados.</td>
+  </tr>
+  <tr>
+    <td>@AfterAll</td>
+    <td>É executado depois de todos os métodos, deve ser estático. Podemos utiliza-lo para fechar o recurso utilizado.</td>
   </tr>
 </table>
 
