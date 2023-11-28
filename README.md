@@ -71,6 +71,20 @@ Feito para enganar uma classe de serviço injetando um mock(instância não dire
 - O Mock permite verificar quantos acessos foram feitos em um determinado método, quais foram os parâmetros enviados para um determinado método podendo utilizar esses dados para criar assertivas nos testes.
 
 ## Verificações
+~~~java
+Mockito.verify(repository, Mokito.atLeastOnce()).getUserByEmail("mail@mail.com");
+Mockito.verify(repository, Mokito.never()).getUserByEmail("outro@mail.com");
+Mockito.verify(repository, Mokito.times(3)).getUserByEmail("mail@mail.com");
+Mockito.verifyNoMoreInteractions(repository);
+~~~~
+
+# Annotations
+Pode ser utilizada para fazer a injeção de dependências do repository para o service.
+~~~~java
+@Mock private UserRepository repository;
+@InjectMocks private UserService service;
+~~~~
+Essa abordagem simplifica a inicialização e o gerenciamento de dependências, permitindo que o repositório seja instanciado como um mock e injetado no serviço de forma eficiente. 
 
 
 
