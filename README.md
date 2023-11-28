@@ -40,17 +40,18 @@ Tem como objetivo reduzir o universo de testes em um subconjunto menor. Assim, e
 
 ## Onion Architecture
 O domínio é uma esfera de conhecimento. Refere-se ao conhecimento de negócios que nosso software está tentando modelar. O Domain-Driven Design centra-se no modelo de domínio que tem uma compreensão rica dos processos e regras de um domínio. A arquitetura Onion implementa esse conceito e aumenta drasticamente a qualidade do código, reduz a complexidade e permite sistemas corporativos evolutivos.
-<img width="295" alt="Sem título" src="https://github.com/marianasauer/apiTestes/assets/105138712/59416112-df45-4b4c-9aca-200b07824237">
+
+!<img width="295" alt="Sem título" src="https://github.com/marianasauer/apiTestes/assets/105138712/59416112-df45-4b4c-9aca-200b07824237">
 
 ## Parameterized
 Podemos escrever o código e passar uma lista de um conjunto de valores a serem utilizado. Para cada conjunto de valores será criado um novo teste, assim não terá uma lista de testes repetitivos extensa e vai facilitar caso seja necessário adicionar um novo teste, será necessário apenas adicionar uma nova linha no parameterized.
-ˋˋˋ
+<br>
 @ParameterizedTest
 @CsvSource(value = {" ", " ", " "})
 public void deveDividirCorretamente(int num, int den, double res){
   float resultado = calc.dividir(num, den);
   Assertions.assertEquals(res, resultado);
 }
- ˋˋˋ
+
 
 
