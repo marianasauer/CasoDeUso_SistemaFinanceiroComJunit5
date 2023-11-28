@@ -1,5 +1,4 @@
-# Aplicação com Junit 5 em um Sistema Financeiro ![image](https://github.com/marianasauer/apiTestes/assets/105138712/b5a7de4f-ab0b-4392-90b9-037ed063a429)
-
+# Aplicação com Junit 5 em um Sistema Financeiro
 
 ## Testes Unitários:
 É um alinhamento entre a expectativa e a realidade, já sabendo previamente o resultado correto.
@@ -54,7 +53,26 @@ public void deveDividirCorretamente(int num, int den, double res){
   float resultado = calc.dividir(num, den);
   Assertions.assertEquals(res, resultado);
 }
-~~~
+~~~~
+
+# TDD Test Driven Development
+É um prática de desenvolvimento em que o teste diz o que deve ser feito na implementação do código. Primeiramente, é desenvolvido os testes e depois o código(domain class).
+
+<img width="295" alt="1" src="https://github.com/marianasauer/apiTestes/assets/105138712/51e3b7b0-a2ac-4c3a-9c8f-37af5b182980">
+
+# Princípio da Inversão de Dependências
+Módulos de alto nível, que fornecem lógica complexa, devem ser facilmente reutilizáveis e não afetados por mudanças em módulos de baixo nível, que fornecem recursos de utilidade. Para isso, é necessário introduzir uma abstração que desacople os módulos de alto e baixo nível um do outro.
+
+# Mockito
+Feito para enganar uma classe de serviço injetando um mock(instância não diretamente da interface, imitações ou unidades falsas que simulam o comportamento de unidades reais).
+- Deve ensinar ao Mockito como ele deve se comportar.
+- Criar uma instância da interface sem criar uma classe, utilizando a interface para invocar métodos(que não tenha implementação para eles), como se fosse um classe.
+- Mocks são objetos simulados usados para isolar a unidade de código que está sendo testada, substituindo dependências externas.
+- O Mock permite verificar quantos acessos foram feitos em um determinado método, quais foram os parâmetros enviados para um determinado método podendo utilizar esses dados para criar assertivas nos testes.
+
+## Verificações
+
+
 
 
 
