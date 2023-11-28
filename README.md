@@ -1,4 +1,4 @@
-# Aplicação com Junit 5 em um Sistema Financeiro
+# Aplicação com Junit 5 em um Sistema Financeiro https://icons8.com.br/icon/70096/5-circulado
 
 ## Testes Unitários:
 É um alinhamento entre a expectativa e a realidade, já sabendo previamente o resultado correto.
